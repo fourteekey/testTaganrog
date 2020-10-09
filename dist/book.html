@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<title>{{ page_title }}</title>
+</head>
+<body>
+
+<div class="container">
+	<div class="row">
+	{% for book in page_data.object_list %}
+		<div class="card col-6" style="width: 18rem;">
+			<img src="{{ book.image_link }}" class="card-img-top" alt="#" height="400px" >
+			<div class="card-body">
+				<h5 class="text-center card-title">{{ book.name }}</h5>
+				<p class="card-text"> {{ book.description }} </p>
+				{% if book.author.all %}
+					<small>
+						{% for data in book.author.all %}
+							<a href="{% url 'book:card_author' data.id %}">{{ data }}</a> |
+						{% endfor %}
+					</small>
+				{% endif %}
+				<br>
+				<a href="#" class="col btn btn-primary">Подробнее</a>
+			</div>
+		</div>
+	{% endfor %}
+	</div>
+</div>
+<br>
+
+<div class="container">
+	<nav aria-label="Page navigation example">
+		<ul class="pagination">
+			{% for n in page_data.paginator.page_range %}
+				{% if page_data.number == n %}
+					<li class="page-item active">
+						<a class="page-link" href="?page={{ n }}">{{ n }}</a>
+					</li>
+				{% else %}
+					<li class="page-item">
+						<a class="page-link" href="?page={{ n }}">{{ n }}</a>
+					</li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+	</nav>
+</div>
+</body>
+</html>
